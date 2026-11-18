@@ -1,0 +1,16 @@
+{
+  "name": "Alerta Drones — Base Militar",
+  "short_name": "ALERTA",
+  "description": "Sistema de alerta de amenaza de drones para puestos de mando",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a0e17",
+  "theme_color": "#ef4444",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "categories": ["utilities", "security"],
+  "lang": "es"
+}

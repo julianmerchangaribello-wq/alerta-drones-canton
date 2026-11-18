@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Instrucción Táctica: Sirena Automática Militar</title>
+  <style>
+    body {
+      background: #0f172a;
+      color: #f8fafc;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      padding: 20px;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    h1 { color: #ef4444; text-transform: uppercase; letter-spacing: 1.5px; border-bottom: 2px solid #ef4444; padding-bottom: 8px; }
+    h2 { color: #38bdf8; margin-top: 25px; }
+    .step {
+      background: #1e293b;
+      border-left: 4px solid #38bdf8;
+      padding: 16px;
+      margin-bottom: 16px;
+      border-radius: 0 8px 8px 0;
+    }
+    .step.alert { border-left-color: #ef4444; }
+    .badge {
+      background: #ef4444;
+      color: white;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    code {
+      background: #334155;
+      color: #fde047;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+    ol { padding-left: 20px; }
+    li { margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+
+  <h1>🛡️ Configuración de Alarma Automática sin Tocar Pantalla</h1>
+  <p>Esta configuración se hace <strong>una sola vez en 1 minuto</strong> en el celular de cada cuadro de mando. Garantiza que cuando el bot envíe la alerta, el celular <strong>encienda la pantalla, suba el volumen al 100% y suene como sirena antiaérea en el bolsillo</strong>.</p>
+
+  <div class="step alert">
+    <h2>🎯 ¿Cómo funciona?</h2>
+    <p>Utilizamos <strong>MacroDroid</strong> (la app estándar y gratuita de automatización táctica para Android). Cuando detecta que llega un mensaje de <code>AlertaDronCanton_bot</code> con la palabra <strong>ALERTA</strong>, ejecuta automáticamente:</p>
+    <ul>
+      <li>🔊 <strong>Volumen Multimedia y Alarma al 100%</strong> (incluso si el teléfono está en Silencio o No Molestar).</li>
+      <li>💡 <strong>Enciende la pantalla</strong> inmediatamente.</li>
+      <li>🚨 <strong>Reproduce sonido de alarma en bucle continuo</strong> hasta que el oficial pulse la pantalla.</li>
+    </ul>
+  </div>
+
+  <div class="step">
+    <h2>📲 Pasos para el Oficial (1 Minuto en el Teléfono):</h2>
+    <ol>
+      <li>Descargar en el celular <strong>MacroDroid</strong> (desde Play Store o APK).</li>
+      <li>Abrir MacroDroid y tocar en <strong>"Añadir Macro"</strong> (+).</li>
+      <li><strong>DISPARADOR (Rojo +):</strong>
+        <ul>
+          <li>Seleccionar: <code>Notificación</code> > <code>Notificación Recibida</code>.</li>
+          <li>Seleccionar la app: <code>Telegram</code>.</li>
+          <li>En <em>Contenido del texto</em> seleccionar <strong>Contiene</strong> y escribir: <code>ALERTA</code>.</li>
+        </ul>
+      </li>
+      <li><strong>ACCIONES (Azul +):</strong>
+        <ul>
+          <li><strong>1.</strong> <code>Volumen</code> > <code>Establecer Volumen</code> > Subir <strong>Alarma y Multimedia al 100%</strong>.</li>
+          <li><strong>2.</strong> <code>Pantalla</code> > <code>Encender Pantalla</code>.</li>
+          <li><strong>3.</strong> <code>Multimedia</code> > <code>Reproducir Sonido</code> > Elegir tono de <strong>Alarma / Sirena</strong>.</li>
+        </ul>
+      </li>
+      <li>Guardar la Macro con el nombre: <code>ALERTA MILITAR DRONES</code>.</li>
+    </ol>
+  </div>
+
+  <div class="step">
+    <h2>✅ Prueba de Fuego</h2>
+    <p>Bloquea el celular, apaga la pantalla y déjalo en la mesa o bolsillo. Desde el panel de mando activamos la alarma: <strong>el celular se despertará solo y empezará a sonar como sirena antiaérea a todo volumen.</strong></p>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acceso y Despliegue Rápido - QR Alerta Drones</title>
+  <style>
+    body {
+      background-color: #0b1120;
+      color: #f1f5f9;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      color: #f87171;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-align: center;
+    }
+    p.sub {
+      color: #94a3b8;
+      margin-top: 0;
+      text-align: center;
+      max-width: 650px;
+      font-size: 0.95rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      width: 100%;
+      max-width: 900px;
+      margin-top: 20px;
+    }
+    .card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+    .card h2 {
+      font-size: 1.1rem;
+      margin-top: 0;
+      color: #38bdf8;
+    }
+    .card img {
+      width: 220px;
+      height: 220px;
+      border-radius: 8px;
+      background: white;
+      padding: 8px;
+      margin: 15px 0;
+    }
+    .badge {
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    .badge-blue { background: #0369a1; color: #e0f2fe; }
+    .badge-red { background: #991b1b; color: #fee2e2; }
+    .badge-green { background: #166534; color: #dcfce7; }
+    .instructions {
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
+    .btn-print {
+      margin-top: 30px;
+      background: #dc2626;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1rem;
+      letter-spacing: 1px;
+    }
+    .btn-print:hover {
+      background: #b91c1c;
+    }
+    @media print {
+      body { background: white; color: black; padding: 0; }
+      .btn-print { display: none; }
+      .card { border: 1px solid #ccc; box-shadow: none; background: white; color: black; }
+      .card h2 { color: black; }
+      .instructions { color: #333; }
+      p.sub { color: #555; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🛡️ Enlace Inmediato - Alerta Táctica</h1>
+  <p class="sub">
+    Pega esta hoja en la guardia, comedores o salas de mando para que los cuadros y tropa enlacen sus celulares en 5 segundos solo apuntando con la cámara.
+  </p>
+
+  <div class="grid">
+    <!-- QR WIFI -->
+    <div class="card">
+      <span class="badge badge-blue">Paso 1: Conexión Automática</span>
+      <h2>📶 Red WiFi del Cantón</h2>
+      <img src="/qr_wifi.png" alt="QR WiFi Hotspot">
+      <div class="instructions">
+        <strong>Apunta con la cámara:</strong><br>
+        Conecta directo al Hotspot Táctico <code>ALERTA_TACTICA_CANTON</code> sin necesidad de teclear contraseñas ni usar internet externo.
+      </div>
+    </div>
+
+    <!-- QR APP -->
+    <div class="card">
+      <span class="badge badge-red">Paso 2: Abrir Aplicativo</span>
+      <h2>📲 Receptor de Alarma</h2>
+      <img src="/qr_app_http.png" alt="QR App">
+      <div class="instructions">
+        <strong>Abre la alarma en el celular:</strong><br>
+        Carga la pantalla de guardia y alerta con sirena integrada. Pulsa en <em>"Agregar a inicio"</em> para tenerla instalada como App directa.
+      </div>
+    </div>
+  </div>
+
+  <button class="btn-print" onclick="window.print()">🖨️ IMPRIMIR CARTEL PARA CUADROS DE MANDO</button>
+
+</body>
+</html>

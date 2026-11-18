@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+  <meta name="theme-color" content="#7f1d1d"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="CONTROL"/>
+  <link rel="manifest" href="/manifest.json"/>
+  <link rel="apple-touch-icon" href="/icon-192.png"/>
+  <title>⚡ Panel de Control</title>
+  <style>
+    :root {
+      --bg: #0a0e17; --panel: #111827; --border: #1f2d44;
+      --text: #c9d6e8; --muted: #5a7290;
+      --green: #22c55e; --yellow: #eab308;
+      --orange: #f97316; --red: #ef4444; --blue: #3b82f6;
+    }
+    * { box-sizing: border-box; margin:0; padding:0; -webkit-tap-highlight-color: transparent; }
+    html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'Courier New', monospace; }
+    #app { min-height: 100dvh; display: flex; flex-direction: column; }
+
+    /* ── Header ── */
+    header { background: var(--panel); border-bottom: 2px solid var(--red); padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-size: 0.85rem; font-weight: bold; letter-spacing: 2px; color: var(--red); }
+    .hdr-r { display: flex; gap: 10px; align-items: center; font-size: 0.65rem; color: var(--muted); }
+    #conn-dot { width: 8px; height: 8px; border-radius: 50%; background: #374151; }
+    #conn-dot.on  { background: var(--green); box-shadow: 0 0 6px var(--green); }
+    #conn-dot.err { background: var(--red); }
+
+    /* ── Scroll container ── */
+    main { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 14px; }
+
+    /* ── Estado badge ── */
+    .state-badge { border-radius: 12px; border: 2px solid; padding: 16px; text-align: center; }
+    .state-badge.NONE   { border-color: var(--green);  background: #052e16; }
+    .state-badge.YELLOW { border-color: var(--yellow); background: #422006; animation: pulse 1s infinite alternate; }
+    .state-badge.ORANGE { border-color: var(--orange); background: #431407; animation: pulse 0.7s infinite alternate; }
+    .state-badge.RED    { border-color: var(--red);    background: #3b0a0a; animation: pulse 0.5s infinite alternate; }
+    @keyframes pulse { from{box-shadow:none;} to{box-shadow:0 0 20px 3px currentColor;} }
+    .sb-icon { font-size: 2rem; }
+    .sb-name { font-size: 1.2rem; font-weight:900; letter-spacing:3px; margin-top:4px; }
+    .sb-info { font-size: 0.72rem; color: var(--muted); margin-top:4px; }
+
+    /* ── Info rows ── */
+    .info-row { display:flex; justify-content:space-between; padding:7px 0; border-bottom:1px solid #1a2535; font-size:0.78rem; }
+    .info-row .lbl { color: var(--muted); }
+    .info-row .val { font-weight: bold; }
+
+    /* ── Card ── */
+    .card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+    .card-title { font-size: 0.7rem; letter-spacing: 3px; color: var(--muted); margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+
+    /* ── Form ── */
+    label { font-size: 0.7rem; color: var(--muted); display: block; margin-bottom: 4px; letter-spacing: 1px; }
+    input, textarea { width:100%; padding:12px; margin-bottom:12px; background:#1f2937; border:1px solid #374151; color:var(--text); border-radius:8px; font-family:'Courier New',monospace; font-size:0.9rem; }
+    textarea { resize: vertical; min-height: 60px; }
+    input:focus, textarea:focus { outline:none; border-color:var(--blue); }
+
+    /* ── Nivel ── */
+    .level-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:14px; }
+    .btn-lvl { padding:12px 4px; border:2px solid; border-radius:8px; cursor:pointer; font-family:'Courier New',monospace; font-weight:bold; font-size:0.78rem; background:transparent; }
+    .btn-lvl.YELLOW { border-color:var(--yellow); color:var(--yellow); }
+    .btn-lvl.ORANGE { border-color:var(--orange); color:var(--orange); }
+    .btn-lvl.RED    { border-color:var(--red);    color:var(--red); }
+    .btn-lvl.sel    { opacity:1; }
+    .btn-lvl:not(.sel) { opacity:0.3; }
+    .btn-lvl.YELLOW.sel { background:#422006; }
+    .btn-lvl.ORANGE.sel { background:#431407; }
+    .btn-lvl.RED.sel    { background:#3b0a0a; }
+
+    /* ── Botones ── */
+    .btn-activate {
+      width:100%; padding:18px; background:var(--red); color:white;
+      border:none; border-radius:12px; cursor:pointer;
+      font-family:'Courier New',monospace; font-size:1.1rem; font-weight:900;
+      letter-spacing:3px; margin-bottom:10px;
+      box-shadow: 0 4px 20px rgba(239,68,68,0.4);
+    }
+    .btn-activate:active:not(:disabled) { transform:scale(0.97); }
+    .btn-activate:disabled { background:#374151; box-shadow:none; cursor:not-allowed; }
+    .btn-cancel {
+      width:100%; padding:14px; background:transparent; color:var(--green);
+      border:2px solid var(--green); border-radius:12px; cursor:pointer;
+      font-family:'Courier New',monospace; font-size:0.85rem; font-weight:bold; letter-spacing:2px;
+    }
+    .btn-cancel:disabled { opacity:0.3; cursor:not-allowed; }
+
+    /* ── Clientes ── */
+    #clients-list { max-height:150px; overflow-y:auto; }
+    .c-row { display:flex; align-items:center; gap:8px; padding:6px 0; border-bottom:1px solid #1a2535; font-size:0.75rem; }
+    .c-dot { width:7px; height:7px; border-radius:50%; background:var(--green); flex-shrink:0; }
+
+    /* ── Confirm modal ── */
+    #confirm-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); align-items:flex-end; justify-content:center; z-index:999; padding:0; }
+    #confirm-modal.show { display:flex; }
+    .confirm-sheet {
+      background:#1f1010; border:2px solid var(--red); border-radius:20px 20px 0 0;
+      padding:28px 24px; width:100%; max-width:480px; text-align:center;
+      animation: slideUp 0.25s ease;
+    }
+    @keyframes slideUp { from{transform:translateY(100%);} to{transform:translateY(0);} }
+    .confirm-sheet h2 { color:var(--red); font-size:1.3rem; margin-bottom:10px; letter-spacing:3px; }
+    .confirm-sheet p  { color:var(--text); margin-bottom:22px; font-size:0.85rem; white-space:pre-line; line-height:1.6; }
+    .c-actions { display:flex; gap:10px; }
+    .btn-cy { flex:1; padding:14px; background:var(--red); color:white; border:none; border-radius:10px; cursor:pointer; font-family:'Courier New',monospace; font-weight:bold; font-size:0.95rem; }
+    .btn-cn { flex:1; padding:14px; background:transparent; color:var(--muted); border:1px solid var(--muted); border-radius:10px; cursor:pointer; font-family:'Courier New',monospace; }
+  </style>
+</head>
+<body>
+<div id="app">
+
+<!-- Confirm -->
+<div id="confirm-modal">
+  <div class="confirm-sheet">
+    <h2>⚠ CONFIRMAR</h2>
+    <p id="confirm-text"></p>
+    <div class="c-actions">
+      <button class="btn-cy" onclick="confirmAction()">CONFIRMAR</button>
+      <button class="btn-cn" onclick="cancelAction()">CANCELAR</button>
+    </div>
+  </div>
+</div>
+
+<header>
+  <div class="logo">⚡ PANEL DE CONTROL</div>
+  <div class="hdr-r">
+    <div id="conn-dot"></div>
+    <span id="conn-lbl">DESCONECTADO</span>
+    <span>|</span>
+    <span id="hdr-cl">0 puestos</span>
+    <span id="hdr-time">—</span>
+  </div>
+</header>
+
+<main>
+  <!-- Estado del sistema -->
+  <div class="state-badge NONE" id="state-badge">
+    <div class="sb-icon" id="sb-icon">✅</div>
+    <div class="sb-name" id="sb-name">SIN ALERTA</div>
+    <div class="sb-info" id="sb-info">Sistema en espera</div>
+  </div>
+
+  <!-- Info -->
+  <div class="card">
+    <div class="card-title">ESTADO DEL SISTEMA</div>
+    <div class="info-row"><span class="lbl">Nivel:</span>        <span class="val" id="inf-lvl">—</span></div>
+    <div class="info-row"><span class="lbl">Activado por:</span> <span class="val" id="inf-by">—</span></div>
+    <div class="info-row"><span class="lbl">Hora:</span>         <span class="val" id="inf-at">—</span></div>
+    <div class="info-row"><span class="lbl">Puestos conectados:</span><span class="val" id="inf-cl">0</span></div>
+  </div>
+
+  <!-- Puestos conectados -->
+  <div class="card">
+    <div class="card-title">PUESTOS EN LÍNEA</div>
+    <div id="clients-list"><div style="color:var(--muted);font-size:0.78rem">Esperando conexiones…</div></div>
+  </div>
+
+  <!-- Formulario -->
+  <div class="card">
+    <div class="card-title">ACTIVAR ALERTA</div>
+    <label>OPERADOR (NOMBRE / RANGO)</label>
+    <input id="inp-op" type="text" placeholder="Ej: TTE. GARCÍA / S-2" autocomplete="off"/>
+    <label>NIVEL DE ALERTA</label>
+    <div class="level-grid">
+      <button class="btn-lvl YELLOW sel" id="btn-y" onclick="selLvl('YELLOW')">🟡 AMARILLA</button>
+      <button class="btn-lvl ORANGE"     id="btn-o" onclick="selLvl('ORANGE')">🟠 NARANJA</button>
+      <button class="btn-lvl RED"        id="btn-r" onclick="selLvl('RED')">🔴 ROJA</button>
+    </div>
+    <label>DESCRIPCIÓN DE LA AMENAZA</label>
+    <textarea id="inp-msg">AMENAZA DE DRON DETECTADA</textarea>
+    <button class="btn-activate"  id="btn-act"   onclick="reqActivate()">🚨 ACTIVAR ALERTA A TODO EL CANTÓN</button>
+    <button class="btn-cancel"    id="btn-cancel" onclick="reqDeactivate()" disabled>✅ ZONA DESPEJADA — CANCELAR</button>
+  </div>
+
+  <!-- Configuración Telegram Masiva -->
+  <div class="card">
+    <div class="card-title">📡 ENLACE TELEGRAM (4G/5G TODO EL CANTÓN)</div>
+    <p style="font-size:0.75rem; color:var(--muted); margin-bottom:10px;">
+      Permite que la alerta llegue como notificación y sonido estridente a los celulares de todos los oficiales usando sus datos móviles.
+    </p>
+    <label>BOT TOKEN (DE @BotFather)</label>
+    <input id="inp-tg-token" type="password" placeholder="123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ" />
+    <label>CANAL / GRUPO ID (Ej: @canal_alerta_militar o -100xxxxxx)</label>
+    <input id="inp-tg-channel" type="text" placeholder="@alarma_drones_canton" />
+    <button class="btn-cancel" style="border-color:var(--blue); color:var(--blue);" onclick="saveTelegramConfig()">💾 GUARDAR ENLACE TELEGRAM</button>
+  </div>
+</main>
+</div>
+
+<script>
+const WS_PORT  = 8765;
+const WSS_PORT = 8766;
+let ws, selLevel = 'YELLOW', pendingFn = null;
+
+setInterval(() => {
+  document.getElementById('hdr-time').textContent =
+    new Date().toLocaleTimeString('es-EC',{hour12:false});
+}, 1000);
+
+// Service Worker
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});
+
+function openWS() {
+  const isSecure = location.protocol === 'https:';
+  const proto = isSecure ? 'wss' : 'ws';
+  const port  = isSecure ? WSS_PORT : WS_PORT;
+  const url   = `${proto}://${location.hostname}:${port}?post=${encodeURIComponent('PANEL DE CONTROL')}&unit=${encodeURIComponent('COMANDANCIA')}`;
+
+  ws = new WebSocket(url);
+  ws.onopen  = () => setConn('on', 'CONECTADO');
+  ws.onclose = () => { setConn('', 'RECONECTANDO…'); setTimeout(openWS, 3000); };
+  ws.onerror = () => setConn('err', 'ERROR');
+
+  ws.onmessage = ({data}) => {
+    const pkt = JSON.parse(data);
+    switch(pkt.type) {
+      case 'system_state':    updateState(pkt.data); break;
+      case 'alert_activated':
+        updateState({ alertActive:true, alertLevel:pkt.data.level, alertMessage:pkt.data.message,
+                      activatedBy:pkt.data.activatedBy, activatedAt:pkt.data.activatedAt }); break;
+      case 'alert_deactivated':
+        updateState({ alertActive:false, alertLevel:'NONE' }); break;
+      case 'clients_update':
+        document.getElementById('hdr-cl').textContent = `${pkt.data.count} puestos`;
+        document.getElementById('inf-cl').textContent = pkt.data.count;
+        break;
+      case 'event_log': case 'event_log_update': break;
+    }
+  };
+}
+openWS();
+
+function setConn(cls, lbl) {
+  document.getElementById('conn-dot').className = cls;
+  document.getElementById('conn-lbl').textContent = lbl;
+}
+
+function updateState(s) {
+  const lvl = s.alertLevel || 'NONE';
+  document.getElementById('state-badge').className = `state-badge ${lvl}`;
+  if (s.alertActive) {
+    const icons = { RED:'🚨', ORANGE:'⚠️', YELLOW:'🟡' };
+    document.getElementById('sb-icon').textContent = icons[lvl] || '⚠️';
+    document.getElementById('sb-name').textContent = `ALERTA ${lvl}`;
+    document.getElementById('sb-info').textContent = s.alertMessage || '';
+    document.getElementById('inf-lvl').textContent = lvl;
+    document.getElementById('inf-by').textContent  = s.activatedBy || '—';
+    document.getElementById('inf-at').textContent  = s.activatedAt ? new Date(s.activatedAt).toLocaleTimeString('es-EC',{hour12:false}) : '—';
+    document.getElementById('btn-act').disabled    = true;
+    document.getElementById('btn-cancel').disabled = false;
+  } else {
+    document.getElementById('sb-icon').textContent = '✅';
+    document.getElementById('sb-name').textContent = 'SIN ALERTA';
+    document.getElementById('sb-info').textContent = 'Sistema en espera';
+    document.getElementById('inf-lvl').textContent = '—';
+    document.getElementById('inf-by').textContent  = '—';
+    document.getElementById('inf-at').textContent  = '—';
+    document.getElementById('btn-act').disabled    = false;
+    document.getElementById('btn-cancel').disabled = true;
+  }
+}
+
+function selLvl(lvl) {
+  selLevel = lvl;
+  ['YELLOW','ORANGE','RED'].forEach(l => {
+    const id = l==='YELLOW'?'btn-y':l==='ORANGE'?'btn-o':'btn-r';
+    document.getElementById(id).className = `btn-lvl ${l}${l===lvl?' sel':''}`;
+  });
+}
+
+function reqActivate() {
+  const op  = document.getElementById('inp-op').value.trim() || 'OPERADOR';
+  const msg = document.getElementById('inp-msg').value.trim() || 'AMENAZA DETECTADA';
+  document.getElementById('confirm-text').textContent =
+    `Activar ALERTA ${selLevel}\nOperador: "${op}"\n\n"${msg}"`;
+  pendingFn = () => ws.send(JSON.stringify({action:'activate_alert',level:selLevel,message:msg,operator:op}));
+  document.getElementById('confirm-modal').className = 'show';
+}
+function reqDeactivate() {
+  const op = document.getElementById('inp-op').value.trim() || 'OPERADOR';
+  document.getElementById('confirm-text').textContent = `¿Cancelar la alerta activa?\nOperador: "${op}"`;
+  pendingFn = () => ws.send(JSON.stringify({action:'deactivate_alert',operator:op}));
+  document.getElementById('confirm-modal').className = 'show';
+}
+function confirmAction() {
+  if (pendingFn) pendingFn(); pendingFn = null;
+  document.getElementById('confirm-modal').className = '';
+}
+function cancelAction() {
+  pendingFn = null;
+  document.getElementById('confirm-modal').className = '';
+}
+
+function saveTelegramConfig() {
+  const token = document.getElementById('inp-tg-token').value.trim();
+  const channel = document.getElementById('inp-tg-channel').value.trim();
+  if (!token || !channel) {
+    alert("Por favor ingrese el Token del Bot y el Canal/Grupo.");
+    return;
+  }
+  ws.send(JSON.stringify({ action: 'save_telegram', bot_token: token, channel_id: channel }));
+  alert("Configuración de Telegram enviada al servidor.");
+}
+</script>
+</body>
+</html>
