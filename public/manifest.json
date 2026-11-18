@@ -1,16 +1,24 @@
 {
-  "name": "Alerta Drones — Base Militar",
-  "short_name": "ALERTA",
-  "description": "Sistema de alerta de amenaza de drones para puestos de mando",
-  "start_url": "/",
+  "name": "SARM - Alerta Militar de Drones",
+  "short_name": "Alerta Drones",
+  "description": "Sistema de Alerta Temprana de Drones Militares - MY. JULIAN CAMILO MERCHAN GARIBELLO",
+  "start_url": "/sismo_drones.html",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#0a0e17",
-  "theme_color": "#ef4444",
+  "background_color": "#0b1120",
+  "theme_color": "#dc2626",
   "icons": [
-    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
-    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
-  ],
-  "categories": ["utilities", "security"],
-  "lang": "es"
+    {
+      "src": "/icon-drone-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-drone-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
 }
