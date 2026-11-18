@@ -11,15 +11,15 @@
   <title>SARM - ALERTA MILITAR DE DRONES</title>
   
   <link rel="manifest" href="/manifest.json">
-  <link rel="icon" type="image/png" href="/icon-drone-192.png">
-  <link rel="apple-touch-icon" href="/icon-drone-192.png">
+  <link rel="icon" type="image/png" href="/dron_realista.png">
+  <link rel="apple-touch-icon" href="/dron_realista.png">
 
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
       -webkit-tap-highlight-color: transparent;
       user-select: none;
     }
@@ -33,7 +33,7 @@
       overflow: hidden;
     }
 
-    /* 1. ENCABEZADO MILITAR SUPERIOR */
+    /* 1. ENCABEZADO MILITAR */
     header {
       background: #020617;
       padding: 12px 16px;
@@ -51,11 +51,12 @@
     }
 
     .drone-logo-img {
-      width: 44px;
-      height: 44px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
       border: 2px solid #38bdf8;
-      box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+      background: #0b1120;
     }
 
     .brand-title {
@@ -72,12 +73,6 @@
       letter-spacing: 0.6px;
     }
 
-    .header-actions {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-
     .btn-install-apk {
       background: linear-gradient(135deg, #0284c7, #0369a1);
       color: #ffffff;
@@ -86,37 +81,13 @@
       border-radius: 8px;
       font-size: 0.72rem;
       font-weight: 900;
-      letter-spacing: 0.5px;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 6px;
-      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.4);
     }
 
-    /* BANNER DE AUTORIZACIÓN DE PERMISOS */
-    #banner-permisos {
-      background: #1e3a8a;
-      padding: 10px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #38bdf8;
-      font-size: 0.78rem;
-    }
-
-    .btn-permiso {
-      background: #facc15;
-      color: #000000;
-      border: none;
-      padding: 6px 14px;
-      border-radius: 8px;
-      font-weight: 900;
-      font-size: 0.75rem;
-      cursor: pointer;
-    }
-
-    /* 2. ÁREA CENTRAL TÁCTICA CON DRON MILITAR */
+    /* 2. ÁREA CENTRAL TÁCTICA DEL RADAR */
     .radar-area {
       flex: 1;
       display: flex;
@@ -131,16 +102,16 @@
     }
 
     .drone-radar-container {
-      width: 200px;
-      height: 200px;
+      width: 220px;
+      height: 220px;
       border: 2px dashed #38bdf8;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
-      margin-bottom: 14px;
-      box-shadow: 0 0 35px rgba(56, 189, 248, 0.15);
+      margin-bottom: 12px;
+      box-shadow: 0 0 40px rgba(56, 189, 248, 0.2);
     }
 
     .radar-sweep {
@@ -157,9 +128,9 @@
     }
 
     .drone-central-img {
-      width: 130px;
-      height: 130px;
-      filter: drop-shadow(0 0 15px rgba(56, 189, 248, 0.6));
+      width: 155px;
+      height: 155px;
+      filter: drop-shadow(0 0 20px rgba(56, 189, 248, 0.7));
       animation: flotar 2s ease-in-out infinite alternate;
     }
 
@@ -180,43 +151,38 @@
       font-size: 0.8rem;
       max-width: 380px;
       margin-top: 4px;
-      line-height: 1.4;
     }
 
-    /* LIBRO DE REGISTRO EN TIEMPO REAL */
-    .log-box {
+    /* REGISTRO DE QUIÉN ACTIVÓ LA ALARMA (TARJETA TÁCTICA) */
+    .active-reporter-card {
       margin-top: 14px;
-      background: rgba(15, 23, 42, 0.75);
-      border: 1px solid #1e293b;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid #334155;
       border-radius: 12px;
+      padding: 10px 16px;
       width: 100%;
-      max-width: 520px;
-      padding: 10px 14px;
+      max-width: 500px;
       text-align: left;
     }
 
-    .log-header {
-      font-size: 0.72rem;
-      font-weight: 900;
+    .reporter-title {
+      font-size: 0.7rem;
       color: #38bdf8;
+      font-weight: 900;
       letter-spacing: 1px;
-      margin-bottom: 6px;
-      display: flex;
-      justify-content: space-between;
+      text-transform: uppercase;
+      margin-bottom: 4px;
     }
 
-    .log-entry {
-      font-size: 0.72rem;
-      color: #cbd5e1;
-      padding: 3px 0;
-      border-bottom: 1px solid #1e293b;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .log-operator {
-      color: #f59e0b;
+    .reporter-info {
+      font-size: 0.82rem;
+      color: #f8fafc;
       font-weight: bold;
+    }
+
+    .reporter-badge {
+      color: #f59e0b;
+      font-weight: 900;
     }
 
     /* 3. BARRA INFERIOR DE ACCIÓN */
@@ -245,11 +211,6 @@
       text-transform: uppercase;
       cursor: pointer;
       box-shadow: 0 4px 20px rgba(220, 38, 38, 0.6);
-      transition: all 0.15s;
-    }
-
-    .btn-alerta-roja:active {
-      transform: scale(0.98);
     }
 
     .btn-silenciar-lock {
@@ -258,9 +219,9 @@
       background: #1e293b;
       color: #94a3b8;
       border: 1px solid #334155;
-      padding: 12px;
+      padding: 14px;
       border-radius: 10px;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       font-weight: 900;
       letter-spacing: 1px;
       cursor: pointer;
@@ -270,7 +231,7 @@
       gap: 8px;
     }
 
-    /* 4. MODAL PARA DISPARAR ALERTA (SELECCIONAR QUIÉN DISPARA) */
+    /* 4. MODAL PARA DISPARAR ALERTA (REGISTRAR OPERADOR) */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -297,7 +258,7 @@
     }
 
     .modal-title {
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       font-weight: 900;
       color: #f87171;
       margin-bottom: 12px;
@@ -306,12 +267,12 @@
 
     .input-táctico {
       width: 100%;
-      padding: 12px;
+      padding: 14px;
       background: #1e293b;
       border: 1px solid #334155;
       color: #ffffff;
       border-radius: 8px;
-      font-size: 0.95rem;
+      font-size: 1rem;
       margin-bottom: 12px;
       outline: none;
     }
@@ -358,7 +319,7 @@
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      padding: 30px 20px;
+      padding: 25px 20px;
       text-align: center;
       animation: pulso-rojo 0.6s infinite alternate;
     }
@@ -373,7 +334,7 @@
     }
 
     .alerta-titulo-grande {
-      font-size: 2.3rem;
+      font-size: 2.2rem;
       font-weight: 900;
       letter-spacing: 2px;
       text-transform: uppercase;
@@ -384,15 +345,27 @@
 
     .alerta-sub {
       font-size: 1.05rem;
-      margin-top: 8px;
+      margin-top: 6px;
       color: #fee2e2;
       font-weight: 800;
     }
 
+    .alerta-reporter-badge {
+      display: inline-block;
+      margin-top: 8px;
+      background: rgba(0,0,0,0.6);
+      border: 1px solid #fde047;
+      color: #fde047;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 900;
+    }
+
     .drone-ataque-img {
-      width: 140px;
-      height: 140px;
-      filter: drop-shadow(0 0 20px #ffffff);
+      width: 150px;
+      height: 150px;
+      filter: drop-shadow(0 0 25px #ffffff);
       animation: sacudir 0.4s infinite alternate;
     }
 
@@ -402,23 +375,23 @@
     }
 
     .cuenta-regresiva-box {
-      background: rgba(0,0,0,0.6);
-      padding: 14px 34px;
-      border-radius: 18px;
+      background: rgba(0,0,0,0.65);
+      padding: 12px 30px;
+      border-radius: 16px;
       border: 2px solid rgba(255,255,255,0.3);
     }
 
     .segundos {
-      font-size: 3.5rem;
+      font-size: 3.2rem;
       font-weight: 900;
       color: #fde047;
       line-height: 1;
     }
 
     .segundos-label {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: #ffffff;
-      margin-top: 6px;
+      margin-top: 4px;
       font-weight: bold;
     }
 
@@ -430,7 +403,7 @@
       max-width: 440px;
       padding: 18px;
       border-radius: 14px;
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       font-weight: 900;
       letter-spacing: 1.5px;
       text-transform: uppercase;
@@ -448,88 +421,74 @@
   <!-- ENCABEZADO -->
   <header>
     <div class="brand-box">
-      <img src="/icon-drone-192.png" alt="Dron Táctico" class="drone-logo-img">
+      <img src="/dron_realista.png" alt="Dron Militar" class="drone-logo-img">
       <div>
         <div class="brand-title">SARM - ALERTA MILITAR DE DRONES</div>
         <div class="brand-officer">MY. JULIAN CAMILO MERCHAN GARIBELLO</div>
       </div>
     </div>
-    <div class="header-actions">
+    <div>
       <button class="btn-install-apk" id="btn-install-app" onclick="instalarComoApp()">
         📲 INSTALAR APK
       </button>
     </div>
   </header>
 
-  <!-- BANNER DE PERMISOS -->
-  <div id="banner-permisos">
-    <span>🔊 Activar Sirena 24/7 y Segundo Plano</span>
-    <button class="btn-permiso" onclick="autorizarPermisosMilitares()">AUTORIZAR</button>
-  </div>
-
-  <!-- RADAR CENTRAL CON DRON -->
+  <!-- ÁREA CENTRAL DEL RADAR -->
   <div class="radar-area">
     <div class="drone-radar-container">
       <div class="radar-sweep"></div>
-      <img src="/icon-drone-512.png" alt="Dron Militar" class="drone-central-img">
+      <img src="/dron_realista.png" alt="Dron Táctico" class="drone-central-img">
     </div>
 
     <div class="radar-info-title">ESPACIO AÉREO DESPEJADO</div>
-    <div class="radar-info-sub">Monitoreo y respuesta de emergencia en tiempo real para cuadros de mando y cantón militar</div>
+    <div class="radar-info-sub">Sistema de Alerta Temprana en tiempo real para cuadros de mando militar</div>
 
-    <!-- LIBRO DE REGISTRO EN TIEMPO REAL -->
-    <div class="log-box">
-      <div class="log-header">
-        <span>📖 LIBRO DE REGISTRO MILITAR</span>
-        <span id="badge-estado" style="color:#4ade80;">🟢 SIN AMENAZA</span>
-      </div>
-      <div id="log-lista">
-        <div class="log-entry">
-          <span>Sistema en espera de guardia</span>
-          <span class="log-operator">CENTRAL</span>
-        </div>
+    <!-- TARJETA: QUIÉN ACTIVÓ LA ÚLTIMA ALERTA -->
+    <div class="active-reporter-card">
+      <div class="reporter-title">📖 REGISTRO DE ÚLTIMA ACTIVACIÓN</div>
+      <div class="reporter-info" id="txt-registro-info">
+        En espera de guardia central. Sin incidentes.
       </div>
     </div>
   </div>
 
-  <!-- CONTROLES FIJOS ABAJO -->
+  <!-- CONTROLES ABAJO -->
   <div class="controls-bar">
     <button class="btn-alerta-roja" onclick="abrirModalDisparo()">
       🚨 ACTIVAR ALERTA DE DRONES
     </button>
-    <button class="btn-silenciar-lock" onclick="abrirModalDesactivar()">
-      🔒 DESACTIVAR CON CÓDIGO MILITAR
-    </button>
   </div>
 
-  <!-- MODAL PARA DISPARAR ALERTA (REGISTRAR QUIÉN LA HACE) -->
+  <!-- MODAL: REGISTRAR QUIÉN ACTIVA LA ALERTA -->
   <div class="modal-backdrop" id="modal-disparo">
     <div class="modal-card">
-      <div class="modal-title">🚨 ACTIVACIÓN DE EMERGENCIA</div>
-      <p style="font-size:0.8rem; color:#94a3b8; margin-bottom:14px;">La alerta sonará en todas las tablets y celulares del cantón.</p>
+      <div class="modal-title">🚨 ACTIVACIÓN DE ALERTA MILITAR</div>
+      <p style="font-size:0.8rem; color:#94a3b8; margin-bottom:14px;">Ingrese sus datos para que todos los oficiales sepan quién activa la alarma.</p>
       
       <input type="text" id="inp-operador" class="input-táctico" placeholder="Su Grado y Nombre (Ej: CP. PÉREZ)">
-      <input type="text" id="inp-sector" class="input-táctico" placeholder="Sector de Dron (Ej: PERÍMETRO NORTE)">
+      <input type="text" id="inp-sector" class="input-táctico" placeholder="Sector o Coordenadas (Ej: TORRE NORTE)">
 
       <div class="modal-actions">
-        <button class="btn-confirmar-disparo" onclick="confirmarDisparoAlerta()">DISPARAR ALERTA</button>
-        <button class="btn-cerrar-modal" onclick="cerrarModalDisparo()">CANCELAR</button>
+        <button class="btn-confirmar-disparo" onclick="confirmarDisparoAlerta()">DISPARAR AHORA</button>
+        <button class="btn-cerrar-modal" onclick="cerrarModalDisparo()">VOLVER</button>
       </div>
     </div>
   </div>
 
-  <!-- MODAL PARA DESACTIVAR CON CÓDIGO -->
+  <!-- MODAL: DESACTIVAR OBLIGATORIAMENTE CON CLAVE -->
   <div class="modal-backdrop" id="modal-desactivar">
     <div class="modal-card" style="border-color:#38bdf8;">
       <div class="modal-title" style="color:#38bdf8;">🔒 CÓDIGO DE DESACTIVACIÓN</div>
-      <p style="font-size:0.8rem; color:#94a3b8; margin-bottom:14px;">Solo personal autorizado con el código militar puede silenciar la alarma.</p>
+      <p style="font-size:0.8rem; color:#94a3b8; margin-bottom:14px;">Solo el oficial con la clave táctica puede silenciar y apagar la alarma.</p>
       
-      <input type="password" id="inp-codigo" class="input-táctico" placeholder="Ingrese Código de Seguridad" inputmode="numeric">
-      <input type="text" id="inp-operador-cancela" class="input-táctico" placeholder="Nombre de Quien Cancela">
-      <div id="msg-error-clave" style="color:#f87171; font-size:0.75rem; margin-bottom:10px; display:none;"></div>
+      <input type="password" id="inp-codigo" class="input-táctico" placeholder="Ingrese Código Militar (1928)" inputmode="numeric">
+      <input type="text" id="inp-operador-cancela" class="input-táctico" placeholder="Nombre de Quien Silencia">
+      
+      <div id="msg-error-clave" style="color:#f87171; font-size:0.8rem; font-weight:bold; margin-bottom:10px; display:none;"></div>
 
       <div class="modal-actions">
-        <button class="btn-confirmar-disparo" style="background:#0284c7;" onclick="confirmarDesactivacion()">DESACTIVAR SIRENA</button>
+        <button class="btn-confirmar-disparo" style="background:#0284c7;" onclick="confirmarDesactivacion()">SILENCIAR SIRENA</button>
         <button class="btn-cerrar-modal" onclick="cerrarModalDesactivar()">VOLVER</button>
       </div>
     </div>
@@ -538,23 +497,25 @@
   <!-- PANTALLA ROJA DE IMPACTO TIPO ALERTA SÍSMICA -->
   <div id="overlay-emergencia">
     <div>
-      <div style="background:#000; display:inline-block; padding:8px 18px; border-radius:30px; font-weight:900; letter-spacing:2px; font-size:0.82rem; margin-bottom:10px; color:#f87171;">
+      <div style="background:#000; display:inline-block; padding:8px 18px; border-radius:30px; font-weight:900; letter-spacing:2px; font-size:0.82rem; margin-bottom:8px; color:#f87171;">
         ⚠ ALERTA DE AMENAZA AÉREA
       </div>
       <h1 class="alerta-titulo-grande">¡ATAQUE DE DRON!</h1>
       <div class="alerta-sub" id="txt-amenaza-sector">BUSCAR CUBIERTA Y DISPERSIÓN INMEDIATA</div>
-      <div style="font-size:0.78rem; color:#fde047; margin-top:4px;" id="txt-reportado-por"></div>
+      <div class="alerta-reporter-badge" id="txt-reportado-por">ACTIVADO POR: CENTRAL</div>
     </div>
 
-    <img src="/icon-drone-512.png" alt="Amenaza Dron" class="drone-ataque-img">
+    <!-- IMAGEN DEL DRON TÁCTICO EN ALERTA ROJA -->
+    <img src="/dron_realista.png" alt="Dron Amenaza" class="drone-ataque-img">
 
     <div class="cuenta-regresiva-box">
       <div class="segundos" id="contador">20s</div>
       <div class="segundos-label">TIEMPO ESTIMADO DE IMPACTO</div>
     </div>
 
+    <!-- OBLIGA A INGRESAR CLAVE PARA SILENCIAR -->
     <button class="btn-silenciar-con-clave" onclick="abrirModalDesactivar()">
-      🔒 SILENCIAR CON CÓDIGO
+      🔒 SILENCIAR CON CÓDIGO MILITAR
     </button>
   </div>
 
@@ -564,9 +525,8 @@
     let timerCuenta = null;
     let estadoAlertaLocal = false;
     let deferredPrompt = null;
-    let wakeLock = null;
 
-    // CAPTURAR EVENTO DE INSTALACIÓN COMO APK/PWA
+    // CAPTURAR INSTALACIÓN COMO APK/PWA
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
@@ -576,43 +536,17 @@
     function instalarComoApp() {
       if (deferredPrompt) {
         deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choice) => {
-          if (choice.outcome === 'accepted') {
-            document.getElementById('btn-install-app').style.display = 'none';
-          }
-          deferredPrompt = null;
-        });
+        deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
       } else {
         alert("Para instalar en Tablet o Celular:\n1. Toca los 3 puntos (⋮) de Chrome arriba.\n2. Toca 'Instalar aplicación' o 'Añadir a pantalla de inicio'.");
       }
     }
 
-    // REGISTRO DE SERVICE WORKER PARA SEGUNDO PLANO
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/sw.js').catch(() => {});
     }
 
-    function autorizarPermisosMilitares() {
-      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      if (audioCtx.state === 'suspended') audioCtx.resume();
-
-      if ('Notification' in window) {
-        Notification.requestPermission();
-      }
-
-      if ('wakeLock' in navigator) {
-        navigator.wakeLock.request('screen').then(wl => { wakeLock = wl; }).catch(() => {});
-      }
-
-      document.getElementById('banner-permisos').style.display = 'none';
-      localStorage.setItem('permisos_militares', 'true');
-    }
-
-    if (localStorage.getItem('permisos_militares') === 'true') {
-      document.getElementById('banner-permisos').style.display = 'none';
-    }
-
-    // SONIDO DE SIRENA MILITAR ESTRIDENTE
+    // SIRENA MILITAR ESTRIDENTE
     function reproducirSirena() {
       if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -626,7 +560,7 @@
       const ahora = audioCtx.currentTime;
       
       osc.frequency.setValueAtTime(600, ahora);
-      osc.frequency.linearRampToValueAtTime(1200, ahora + 0.35);
+      osc.frequency.linearRampToValueAtTime(1250, ahora + 0.35);
       osc.frequency.linearRampToValueAtTime(550, ahora + 0.7);
 
       gain.gain.setValueAtTime(1.0, ahora);
@@ -636,7 +570,7 @@
       osc.stop(ahora + 0.7);
     }
 
-    // CONTROL DE MODALES
+    // CONTROL DE VENTANAS MODALES
     function abrirModalDisparo() {
       document.getElementById('modal-disparo').classList.add('abierto');
     }
@@ -653,23 +587,22 @@
       document.getElementById('modal-desactivar').classList.remove('abierto');
     }
 
-    // CONFIRMAR DISPARO AL SERVIDOR
+    // CONFIRMAR DISPARO AL SERVIDOR CON NOMBRE DE QUIÉN LO HACE
     function confirmarDisparoAlerta() {
-      const operador = document.getElementById('inp-operador').value.trim() || 'GUARDIA DE PREVENCIÓN';
-      const sector = document.getElementById('inp-sector').value.trim() || 'PERÍMETRO NORTE';
+      const operador = document.getElementById('inp-operador').value.trim() || 'OFICIAL DE GUARDIA';
+      const sector = document.getElementById('inp-sector').value.trim() || 'PERÍMETRO GENERAL';
       
       cerrarModalDisparo();
 
       fetch(`/api/trigger?operador=${encodeURIComponent(operador)}&sector=${encodeURIComponent(sector)}`)
-        .then(r => r.json())
         .then(() => mostrarPantallaAlerta(operador, sector))
         .catch(() => mostrarPantallaAlerta(operador, sector));
     }
 
-    // CONFIRMAR DESACTIVACIÓN CON CÓDIGO
+    // CONFIRMAR DESACTIVACIÓN CON CÓDIGO OBLIGATORIO (1928)
     function confirmarDesactivacion() {
       const codigo = document.getElementById('inp-codigo').value.trim();
-      const operador = document.getElementById('inp-operador-cancela').value.trim() || 'OFICIAL DE GUARDIA';
+      const operador = document.getElementById('inp-operador-cancela').value.trim() || 'COMANDANCIA';
 
       fetch(`/api/clear?codigo=${encodeURIComponent(codigo)}&operador=${encodeURIComponent(operador)}`)
         .then(r => {
@@ -684,20 +617,18 @@
         .catch(() => {});
     }
 
-    // MOSTRAR ALERTA EN PANTALLA
+    // PANTALLA ROJA DE EMERGENCIA
     function mostrarPantallaAlerta(operador, sector) {
-      if (estadoAlertaLocal) return;
       estadoAlertaLocal = true;
 
       document.getElementById('overlay-emergencia').classList.add('activo');
-      document.getElementById('txt-amenaza-sector').textContent = `AMENAZA CONFIRMADA EN ${sector || 'PERÍMETRO'}`;
-      document.getElementById('txt-reportado-por').textContent = `Reportado por: ${operador || 'PUESTO DE MANDO'}`;
-      document.getElementById('badge-estado').textContent = "🚨 ALERTA ACTIVA";
-      document.getElementById('badge-estado').style.color = "#f87171";
+      document.getElementById('txt-amenaza-sector').textContent = `AMENAZA EN ${sector || 'PERÍMETRO'}`;
+      document.getElementById('txt-reportado-por').textContent = `🚨 ACTIVADO POR: ${operador || 'CENTRAL'}`;
 
       reproducirSirena();
-      if (timerSirena) clearInterval(timerSirena);
-      timerSirena = setInterval(reproducirSirena, 750);
+      if (!timerSirena) {
+        timerSirena = setInterval(reproducirSirena, 750);
+      }
 
       if ('vibrate' in navigator) {
         navigator.vibrate([600, 200, 600, 200, 1000]);
@@ -705,26 +636,25 @@
 
       let seg = 20;
       document.getElementById('contador').textContent = seg + "s";
-      if (timerCuenta) clearInterval(timerCuenta);
-      timerCuenta = setInterval(() => {
-        seg--;
-        if (seg < 0) seg = 0;
-        document.getElementById('contador').textContent = seg + "s";
-      }, 1000);
+      if (!timerCuenta) {
+        timerCuenta = setInterval(() => {
+          seg--;
+          if (seg < 0) seg = 0;
+          document.getElementById('contador').textContent = seg + "s";
+        }, 1000);
+      }
     }
 
     function ocultarPantallaAlerta() {
       estadoAlertaLocal = false;
       document.getElementById('overlay-emergencia').classList.remove('activo');
-      document.getElementById('badge-estado').textContent = "🟢 SIN AMENAZA";
-      document.getElementById('badge-estado').style.color = "#4ade80";
 
       if (timerSirena) { clearInterval(timerSirena); timerSirena = null; }
       if (timerCuenta) { clearInterval(timerCuenta); timerCuenta = null; }
       if ('vibrate' in navigator) navigator.vibrate(0);
     }
 
-    // SINCRONIZACIÓN EN VIVO: CONSULTA AL SERVIDOR CADA MEDIO SEGUNDO
+    // SINCRONIZACIÓN EN VIVO CADA MEDIO SEGUNDO
     setInterval(() => {
       fetch('/api/state')
         .then(r => r.json())
@@ -737,15 +667,13 @@
             }
           }
 
-          // Actualizar libro de registro militar en pantalla
+          // Mostrar en la tarjeta quién activó la alarma
           if (data.historial && data.historial.length > 0) {
-            const html = data.historial.slice(0, 5).map(h => `
-              <div class="log-entry">
-                <span>[${h.hora.split('-')[0].trim()}] ${h.sector} - ${h.estado}</span>
-                <span class="log-operator">${h.operador}</span>
-              </div>
-            `).join('');
-            document.getElementById('log-lista').innerHTML = html;
+            const h = data.historial[0];
+            document.getElementById('txt-registro-info').innerHTML = `
+              Última alerta: <b>${h.sector}</b> (${h.hora})<br>
+              Activada por: <span class="reporter-badge">${h.operador}</span> - Estado: <b>${h.estado}</b>
+            `;
           }
         })
         .catch(() => {});
