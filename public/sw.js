@@ -1,10 +1,6 @@
 /* ============================================================
-   Service Worker - SARM (Sistema Táctico de Alerta Temprana)
-   Comandancia: MY. JULIAN CAMILO MERCHAN GARIBELLO
-   Operación 24/7 en Segundo Plano y Notificaciones de Emergencia
+   Service Worker - SARM Militar (Despierta con pantalla bloqueada)
    ============================================================ */
-
-const CACHE_NAME = 'sarm-militar-v3';
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();
@@ -14,35 +10,52 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(self.clients.claim());
 });
 
-// Escucha mensajes de la aplicación para disparar notificaciones de emergencia persistentes
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'TRIGGER_EMERGENCY') {
-    self.registration.showNotification('🚨 ¡ALERTA ROJA DE DRON EN EL CANTÓN!', {
-      body: 'AMENAZA AÉREA INMINENTE. TOMAR CUBIERTA INMEDIATA.\nAutorizado: MY. JULIAN CAMILO MERCHAN GARIBELLO',
-      icon: '/icon-192.png',
-      badge: '/icon-192.png',
-      tag: 'drone-emergency',
-      renotify: true,
-      requireInteraction: true, // Se queda fija hasta que el oficial la atienda
-      silent: false,
-      vibrate: [800, 200, 800, 200, 800, 200, 1200],
-      data: { url: '/sismo_drones.html' }
-    });
-  } else if (event.data && event.data.type === 'CLEAR_EMERGENCY') {
-    self.registration.getNotifications({ tag: 'drone-emergency' }).then((notifications) => {
-      notifications.forEach((n) => n.close());
-    });
-  }
+// EVENTO PUSH DEL SERVIDOR EN LA NUBE (DESPIERTA EL CELULAR/TABLET EN REPOSO)
+self.addEventListener('push', (event) => {
+  let data = {
+    title: '🚨 ¡ATAQUE DE DRON DETECTADO!',
+    body: 'TOMAR CUBIERTA INMEDIATA. SIRENA MILITAR ACTIVA.',
+    url: '/sismo_drones.html'
+  };
+
+  try {
+    if (event.data) {
+      data = Object.assign(data, event.data.json());
+    }
+  } catch (e) {}
+
+  const options = {
+    body: data.body,
+    icon: '/icon-drone-512.png',
+    badge: '/icon-drone-192.png',
+    tag: 'alerta-militar-dron',
+    renotify: true,
+    requireInteraction: true, // Se queda fija hasta que se atienda
+    silent: false,
+    vibrate: [800, 200, 800, 200, 1000, 300, 1500],
+    data: { url: data.url }
+  };
+
+  event.waitUntil(
+    self.registration.showNotification(data.title, options)
+  );
 });
 
+// CLIC EN LA NOTIFICACIÓN: ENCIENDE Y ABRE LA APP DIRECTAMENTE
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
+  const urlToOpen = event.notification.data ? event.notification.data.url : '/sismo_drones.html';
+
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
       for (const client of clientList) {
-        if ('focus' in client) return client.focus();
+        if ('focus' in client) {
+          return client.focus();
+        }
       }
-      if (clients.openWindow) return clients.openWindow('/sismo_drones.html');
+      if (clients.openWindow) {
+        return clients.openWindow(urlToOpen);
+      }
     })
   );
 });

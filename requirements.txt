@@ -1,1 +1,2 @@
-# Dependencias mínimas para servidor en la nube
+pywebpush
+cryptography

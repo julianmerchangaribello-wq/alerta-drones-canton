@@ -546,8 +546,40 @@
       }
     }
 
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    // REGISTRO DE SERVICE WORKER Y PUSH NOTIFICATIONS (DESPIERTA EN BLOQUEO)
+    if ('serviceWorker' in navigator && 'PushManager' in window) {
+      navigator.serviceWorker.register('/sw.js').then((reg) => {
+        // Solicitar suscripción Push al servidor
+        fetch('/api/vapid_key')
+          .then(r => r.json())
+          .then(data => {
+            if (data.publicKey) {
+              const appServerKey = urlBase64ToUint8Array(data.publicKey);
+              reg.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: appServerKey
+              }).then(sub => {
+                // Registrar este dispositivo en el servidor para alertas de pantalla bloqueada
+                fetch('/api/subscribe_push', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(sub)
+                });
+              }).catch(() => {});
+            }
+          }).catch(() => {});
+      }).catch(() => {});
+    }
+
+    function urlBase64ToUint8Array(base64String) {
+      const padding = '='.repeat((4 - base64String.length % 4) % 4);
+      const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
+      const rawData = window.atob(base64);
+      const outputArray = new Uint8Array(rawData.length);
+      for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+      }
+      return outputArray;
     }
 
     // SIRENA MILITAR ESTRIDENTE
