@@ -455,7 +455,11 @@
 
   <!-- CONTROLES ABAJO -->
   <div class="controls-bar">
-    <button class="btn-alerta-roja" onclick="abrirModalDisparo()">
+    <div style="width:100%; max-width:520px; display:flex; justify-content:space-between; align-items:center; font-size:0.75rem; color:#94a3b8; padding:0 4px;">
+      <span>Dispositivo: <strong id="lbl-nombre-dispositivo" style="color:#38bdf8;">Configurando...</strong></span>
+      <span onclick="cambiarNombreDispositivo()" style="color:#f59e0b; cursor:pointer; text-decoration:underline; font-weight:bold;">Cambiar Puesto</span>
+    </div>
+    <button class="btn-alerta-roja" onclick="dispararAlertaInmediata()">
       🚨 ACTIVAR ALERTA DE DRONES
     </button>
   </div>
@@ -479,10 +483,10 @@
   <!-- MODAL: DESACTIVAR OBLIGATORIAMENTE CON CLAVE -->
   <div class="modal-backdrop" id="modal-desactivar">
     <div class="modal-card" style="border-color:#38bdf8;">
-      <div class="modal-title" style="color:#38bdf8;">🔒 CÓDIGO DE DESACTIVACIÓN</div>
-      <p style="font-size:0.8rem; color:#94a3b8; margin-bottom:14px;">Solo el oficial con la clave táctica puede silenciar y apagar la alarma.</p>
+      <div class="modal-title" style="color:#38bdf8;">🔒 AUTORIZACIÓN DE SEGURIDAD</div>
+      <p style="font-size:0.8rem; color:#94a3b8; margin-bottom:14px;">Ingrese el código de seguridad táctica para silenciar la alarma.</p>
       
-      <input type="password" id="inp-codigo" class="input-táctico" placeholder="Ingrese Código Militar (1928)" inputmode="numeric">
+      <input type="password" id="inp-codigo" class="input-táctico" placeholder="••••" maxlength="8" inputmode="numeric" style="letter-spacing: 6px; font-size: 1.5rem; text-align: center;">
       <input type="text" id="inp-operador-cancela" class="input-táctico" placeholder="Nombre de Quien Silencia">
       
       <div id="msg-error-clave" style="color:#f87171; font-size:0.8rem; font-weight:bold; margin-bottom:10px; display:none;"></div>
@@ -568,6 +572,36 @@
 
       osc.start(ahora);
       osc.stop(ahora + 0.7);
+    }
+
+    // GESTIÓN DEL NOMBRE DEL DISPOSITIVO / PUESTO GUARDADO
+    let nombreDispositivoGuardado = localStorage.getItem('sarm_puesto_militar');
+    if (!nombreDispositivoGuardado) {
+      nombreDispositivoGuardado = prompt("Ingrese el nombre de este Puesto o Dispositivo (ej: TORRE NORTE, GUARDIA PRINCIPAL):", "GUARDIA CENTRAL");
+      if (!nombreDispositivoGuardado || !nombreDispositivoGuardado.trim()) {
+        nombreDispositivoGuardado = "PUESTO MILITAR";
+      }
+      localStorage.setItem('sarm_puesto_militar', nombreDispositivoGuardado);
+    }
+    document.getElementById('lbl-nombre-dispositivo').textContent = nombreDispositivoGuardado;
+
+    function cambiarNombreDispositivo() {
+      const nuevo = prompt("Nuevo nombre para este dispositivo:", nombreDispositivoGuardado);
+      if (nuevo && nuevo.trim()) {
+        nombreDispositivoGuardado = nuevo.trim();
+        localStorage.setItem('sarm_puesto_militar', nombreDispositivoGuardado);
+        document.getElementById('lbl-nombre-dispositivo').textContent = nombreDispositivoGuardado;
+      }
+    }
+
+    // DISPARO INMEDIATO EN 1 SOLO CLIC (EN SEGUNDOS, SIN PERDER TIEMPO ESCRIBIENDO)
+    function dispararAlertaInmediata() {
+      const operador = nombreDispositivoGuardado;
+      const sector = "PERÍMETRO CANTONAL";
+
+      fetch(`/api/trigger?operador=${encodeURIComponent(operador)}&sector=${encodeURIComponent(sector)}`)
+        .then(() => mostrarPantallaAlerta(operador, sector))
+        .catch(() => mostrarPantallaAlerta(operador, sector));
     }
 
     // CONTROL DE VENTANAS MODALES
